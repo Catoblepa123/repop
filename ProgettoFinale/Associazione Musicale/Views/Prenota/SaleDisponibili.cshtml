@@ -1,0 +1,12 @@
+﻿@using Associazione_Musicale.Models;
+
+@model List<SalaModel>
+
+@{ 
+    Layout = null;
+}
+
+@foreach(SalaModel sala in Model)
+{
+    <option value="@sala.ID">@sala.Nome</option>
+}

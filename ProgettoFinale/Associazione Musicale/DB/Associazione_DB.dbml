@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Associazione" Class="Associazione_DBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=LEONARDO;Initial Catalog=Associazione;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="AssociazioneConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Corso" Member="Corso">
+    <Type Name="Corso">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="DataI" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DataF" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Descrizione" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NumeroLez" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Insegnante" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Corso_IscrizioneCorso" Member="IscrizioneCorso" ThisKey="ID" OtherKey="ID_Corso" Type="IscrizioneCorso" />
+      <Association Name="Corso_Lezione" Member="Lezione" ThisKey="ID" OtherKey="Corso" Type="Lezione" />
+      <Association Name="Corso_PartLezione" Member="PartLezione" ThisKey="ID" OtherKey="ID_Corso" Type="PartLezione" />
+      <Association Name="Insegnante_Corso" Member="Insegnante1" ThisKey="Insegnante" OtherKey="ID" Type="Insegnante" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Insegnante" Member="Insegnante">
+    <Type Name="Insegnante">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Cognome" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Pass" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Association Name="Insegnante_Corso" Member="Corso" ThisKey="ID" OtherKey="Insegnante" Type="Corso" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IscrizioneCorso" Member="IscrizioneCorso">
+    <Type Name="IscrizioneCorso">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_Utente" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_Corso" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Corso_IscrizioneCorso" Member="Corso" ThisKey="ID_Corso" OtherKey="ID" Type="Corso" IsForeignKey="true" />
+      <Association Name="Utente_IscrizioneCorso" Member="Utente" ThisKey="ID_Utente" OtherKey="ID" Type="Utente" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lezione" Member="Lezione">
+    <Type Name="Lezione">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Giorno" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Corso" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OraI" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="OraF" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="Descrizione" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Corso_Lezione" Member="Corso1" ThisKey="Corso" OtherKey="ID" Type="Corso" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Prenotazione" Member="Prenotazione">
+    <Type Name="Prenotazione">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Giorno" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="OraI" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="OraF" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="Utente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sala" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Prenotazione_PrenotazioneStrumentazione" Member="PrenotazioneStrumentazione" ThisKey="ID" OtherKey="ID_Prenotazione" Type="PrenotazioneStrumentazione" />
+      <Association Name="Sala_Prenotazione" Member="Sala1" ThisKey="Sala" OtherKey="ID" Type="Sala" IsForeignKey="true" />
+      <Association Name="Utente_Prenotazione" Member="Utente1" ThisKey="Utente" OtherKey="ID" Type="Utente" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PrenotazioneStrumentazione" Member="PrenotazioneStrumentazione">
+    <Type Name="PrenotazioneStrumentazione">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_Prenotazione" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Strumentazione" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Prenotazione_PrenotazioneStrumentazione" Member="Prenotazione" ThisKey="ID_Prenotazione" OtherKey="ID" Type="Prenotazione" IsForeignKey="true" />
+      <Association Name="Strumentazione_PrenotazioneStrumentazione" Member="Strumentazione" ThisKey="ID_Strumentazione" OtherKey="ID" Type="Strumentazione" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sala" Member="Sala">
+    <Type Name="Sala">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Descrizione" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Sala_Prenotazione" Member="Prenotazione" ThisKey="ID" OtherKey="Sala" Type="Prenotazione" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Strumentazione" Member="Strumentazione">
+    <Type Name="Strumentazione">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NomeGenerico" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NomeModello" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Descrizione" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Strumentazione_PrenotazioneStrumentazione" Member="PrenotazioneStrumentazione" ThisKey="ID" OtherKey="ID_Strumentazione" Type="PrenotazioneStrumentazione" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PartLezione" Member="PartLezione">
+    <Type Name="PartLezione">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_Utente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Corso" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Corso_PartLezione" Member="Corso" ThisKey="ID_Corso" OtherKey="ID" Type="Corso" IsForeignKey="true" />
+      <Association Name="Utente_PartLezione" Member="Utente" ThisKey="ID_Utente" OtherKey="ID" Type="Utente" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Utente" Member="Utente">
+    <Type Name="Utente">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Cognome" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Pass" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Utente_IscrizioneCorso" Member="IscrizioneCorso" ThisKey="ID" OtherKey="ID_Utente" Type="IscrizioneCorso" />
+      <Association Name="Utente_Prenotazione" Member="Prenotazione" ThisKey="ID" OtherKey="Utente" Type="Prenotazione" />
+      <Association Name="Utente_PartLezione" Member="PartLezione" ThisKey="ID" OtherKey="ID_Utente" Type="PartLezione" />
+    </Type>
+  </Table>
+</Database>

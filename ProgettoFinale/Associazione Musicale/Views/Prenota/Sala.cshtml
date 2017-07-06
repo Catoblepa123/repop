@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Sala";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Prenotazione sale</h2>
+
+<div id="prenotazioneSalaContainer">
+    <div id="esito" style="font-weight: bold;"></div>
+    <input type="date" id="giorno" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+    <select id="oraInizio">
+        @for (int i = 9; i < 20; i++)
+        {
+            <option value="@i.ToString("00")">@i</option>
+        }
+    </select>
+    <select id="oraFine">
+        @for (int i = 10; i < 21; i++)
+        {
+            <option value="@i.ToString("00")">@i</option>
+        }
+    </select>
+    <button type="button" class="btn btn-primary" onclick="cerca()">Cerca sale</button>
+    <div id="prenotaContainer" style="display: none;">
+        <select id="sale">
+            <option value="">-- Seleziona orari --</option>
+        </select>
+        <button type="button" class="btn btn-primary" onclick="prenota()">Prenota</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function cerca() {
+
+        var errore = false;
+        var giorno = $("#giorno").val();
+        var oraI = $("#oraInizio").val();
+        var oraF = $("#oraFine").val();
+        if (giorno == null) {
+            errore = true;
+            $("#esito").css("color", "red").html("Specificare un giorno");
+        } else if (oraI > oraF) {
+            errore = true;
+            $("#esito").css("color", "red").html("Ora inizio successiva a ora fine");
+        } else {
+            $("#sale").empty();
+
+            $("#sale").load("@Url.Action("CercaSale", "Prenota")", { giorno: giorno, oraI: oraI, oraF: oraF }, function (result) {
+                $("#prenotaContainer").show();
+            });
+        }
+    }
+
+    function prenota() {
+        var errore = false;
+        var giorno = $("#giorno").val();
+        var oraI = $("#oraInizio").val();
+        var oraF = $("#oraFine").val();
+        var idSala = $("#sale").val();
+
+        if (giorno == null) {
+            errore = true;
+            $("#esito").css("color", "red").html("Specificare un giorno");
+        } else if (oraI > oraF) {
+            errore = true;
+            $("#esito").css("color", "red").html("Ora inizio successiva a ora fine");
+        } else {
+            $("#esito").load("@Url.Action("PrenotaSala", "Prenota")", { giorno: giorno, oraI: oraI, oraF: oraF, idSala: idSala }, function (result) {
+                $("#prenotaContainer").show();
+            });
+        }
+    }
+</script>
